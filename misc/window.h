@@ -32,6 +32,7 @@ public:
   {
     w = ww, h = hh;
     size(ww, hh);
+    scroll->resize(0, 0, ww, hh);  // Resize the scrollable area
   }
 
   void set_label (const std::string& s) { label(s.c_str()); }
@@ -46,6 +47,7 @@ public:
 
 protected:
   void draw ();
+  Fl_Scroll* scroll; // Add a scrollable region
 
 private:
   std::vector<Shape*> shapes;  // shapes attached to window
