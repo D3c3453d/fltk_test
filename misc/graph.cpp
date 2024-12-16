@@ -402,4 +402,5 @@ bool can_open (const std::string& s)
   return static_cast<bool>(std::ifstream{s});
 }
 
+
 }  // namespace Graph_lib

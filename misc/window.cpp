@@ -10,10 +10,15 @@ Window::Window(Point xy, int ww, int hh, const std::string& title)
   init();
 }
 
-void Window::init()
-{
-  resizable(this);
-  show();
+void Window::init() {
+  scroll = new Fl_Scroll(0, 0, w, h);  // Create scrollable area
+  scroll->type(Fl_Scroll::BOTH);       // Enable both horizontal and vertical scrolling
+  scroll->box(FL_NO_BOX);              // Remove border to blend with the window
+  this->resizable(scroll);             // Make scroll resizable with the window
+  this->begin();                       // Begin adding widgets
+  this->add(scroll);                   // Add scroll to the window
+  this->end();                         // Stop adding widgets
+  show();                              // Show the window
 }
 
 //----------------------------------------------------
@@ -25,11 +30,10 @@ void Window::draw()
     shapes[i]->draw();
 }
 
-void Window::attach(Widget& w)
-{
-  begin();          // FTLK: begin attaching new Fl_Widgets to this window
-  w.attach(*this);  // let the Widget create its Fl_Widgets
-  end();            // FTLK: stop attaching new Fl_Widgets to this window
+void Window::attach(Widget& w) {
+  scroll->begin();        // Begin adding widgets to the scrollable area
+  w.attach(*this);        // Let Widget create and attach its FLTK representation
+  scroll->end();          // Stop adding widgets
 }
 
 void Window::detach(Widget& w) 
@@ -38,7 +42,9 @@ void Window::detach(Widget& w)
   // w.clean_pointer();
 }
 
-void Window::attach(Shape& s) { shapes.push_back(&s); }
+void Window::attach(Shape& s) {
+  shapes.push_back(&s);
+}
 
 void Window::detach(Shape& s)
 {

@@ -477,57 +477,7 @@ struct Suffix
 
 Suffix::Encoding get_encoding (const std::string& s);
 
-struct Image : public Shape
-{
-  Image(Point xy, const std::string& s, Suffix::Encoding e = Suffix::none);
 
-  ~Image() { delete p; }
-
-  Image(const Image& other)
-  : fn{other.fn}
-  {
-    p = other.p->copy();
-    delete other.p;
-  }
-
-  void draw_lines () const override;
-
-  void set_mask (Point xy, int ww, int hh)
-  {
-    w = ww;
-    h = hh;
-    cx = xy.x;
-    cy = xy.y;
-  }
-
-  void move (int dx, int dy) override
-  {
-    Shape::move(dx, dy);
-    p->draw(point(0).x, point(0).y);
-  }
-
-  int width()
-  {
-    return p->w();
-  }
-
-  int height()
-  {
-    return p->h();
-  }
-
-  void resize(int new_w, int new_h)
-  {
-    p = p->copy(new_w, new_h);
-  }
-
-  Fl_Image* fl_image() { return p; }
-
-private:
-  int w, h, cx, cy;  // define "masking box" within image relative to position (cx,cy)
-  Fl_Image* p;
-  Text fn;
-};
 
 }  // namespace Graph_lib
 
